@@ -153,11 +153,9 @@ function renderItems(filteredItems = items) {
       editModal.style.display = 'block';
     });
 
+
     itemList.appendChild(cardElement);
   });
-
-
-
 }
 
 function saveItems() {
@@ -192,7 +190,7 @@ function editItem(item) {
   editForm.querySelector("#material-input").value = item.material;
   editForm.querySelector("#price-input").value = item.price;
   editForm.querySelector("#color-input").value = item.color;
-  editModal.classList.add("modal--open");
+
 
   editForm.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -204,17 +202,12 @@ function editItem(item) {
     item.price = editForm.querySelector("#price-input").value;
     item.color = editForm.querySelector("#color-input").value;
 
-    // Close the edit modal
-    editModal.classList.remove("modal--open");
 
     // Do something with the updated item (e.g. update it in the item list)
     console.log("Item updated:", item);
   });
 
-  // Handle modal close
-  closeModalBtn.addEventListener("click", () => {
-    editModal.classList.remove("modal--open");
-  });
+
   editForm.addEventListener("submit", event => {
     event.preventDefault();
     item.name = editForm.querySelector("#name-input").value;
@@ -225,5 +218,11 @@ function editItem(item) {
     saveItems();
     renderItems();
     editModal.style.display = "none";
+  });
+
+  const closeModalButton = document.querySelector('#edit-modal .modal__close-btn');
+  closeModalButton.addEventListener('click', () => {
+    const editItem = document.getElementById('edit-modal');
+    editItem.style.display = 'none';
   });
 }
