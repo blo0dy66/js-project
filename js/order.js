@@ -215,4 +215,15 @@ function editItem(item) {
   closeModalBtn.addEventListener("click", () => {
     editModal.classList.remove("modal--open");
   });
+  editForm.addEventListener("submit", event => {
+    event.preventDefault();
+    item.name = editForm.querySelector("#name-input").value;
+    item.material = editForm.querySelector("#material-input").value;
+    item.color = editForm.querySelector("#color-input").value;
+    item.volume = editForm.querySelector("#volume-input").value;
+    item.price = parseFloat(editForm.querySelector("#price-input").value);
+    saveItems();
+    renderItems();
+    editModal.style.display = "none";
+  });
 }
