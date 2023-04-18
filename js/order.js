@@ -1,3 +1,4 @@
+const fs = require('fs');
 async function uploadImage(image) {
   const clientId = 'd71a53405a310f0';
   const data = new FormData();
@@ -14,6 +15,8 @@ async function uploadImage(image) {
   const result = await response.json();
   return result.data.link;
 }
+
+
 
 // Get DOM elements
 const itemList = document.querySelector(".item-list");
@@ -161,15 +164,17 @@ function renderItems(filteredItems = items) {
 }
 
 function saveItems() {
-  localStorage.setItem("items", JSON.stringify(items));
+  const data = JSON.stringify(items);
+  fs.writeFileSync('./data/items.json', data); // Записуємо дані у файл items.json у папці data
 }
 
+
 function loadItems() {
-  const storedItems = localStorage.getItem("items");
-  if (storedItems) {
-    items = JSON.parse(storedItems);
-  } else {
-    items = []; // Initialize items array to an empty array if there is no data in localStorage
+  try {
+    const data = fs.readFileSync('./data/items.json'); // Зчитуємо дані з файлу items.json у папці data
+    items = JSON.parse(data);
+  } catch (err) {
+    items = []; // Якщо файл не знайдено, ініціалізуємо items порожнім масивом
   }
 }
 
