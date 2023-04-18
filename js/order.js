@@ -103,6 +103,23 @@ async function addItem(event) {
 
 }
 
+searchButton.addEventListener('click', () => {
+  const searchValue = searchInput.value.toLowerCase().trim();
+  const filteredItems = items.filter(item => item.name.toLowerCase().includes(searchValue));
+  renderItems(filteredItems);
+});
+
+cancelButton.addEventListener('click', () => {
+  searchInput.value = "";
+  renderItems();
+});
+
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.toLowerCase().trim();
+  const filteredItems = items.filter(item => item.name.toLowerCase().includes(query));
+  renderItems(filteredItems);
+});
+
 function renderItems(filteredItems = items) {
   // Clear items list
   itemList.innerHTML = "";
@@ -119,7 +136,6 @@ function renderItems(filteredItems = items) {
     const nameElement = document.createElement("h3");
     nameElement.innerText = item.name;
     cardElement.appendChild(nameElement);
-
 
     const materialElement = document.createElement('p')
     materialElement.innerText = `Material: ${item.material}`
