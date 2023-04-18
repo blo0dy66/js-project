@@ -184,8 +184,35 @@ function deleteItem(item) {
 }
 
 function editItem(item) {
-  // Here you can add the code to display a form to edit the item's properties
-  // Once the user submits the form, you can update the item object and save it using saveItems() function
-  // After that, call the renderItems() function to update the view
-}
+  const editModal = document.querySelector("#edit-modal");
+  const editForm = document.querySelector("#edit-item");
+  const closeModalBtn = editModal.querySelector("[data-action=close]");
+  editForm.querySelector("#name-input").value = item.name;
+  editForm.querySelector("#volume-input").value = item.volume;
+  editForm.querySelector("#material-input").value = item.material;
+  editForm.querySelector("#price-input").value = item.price;
+  editForm.querySelector("#color-input").value = item.color;
+  editModal.classList.add("modal--open");
 
+  editForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    // Update the item's details with the form values
+    item.name = editForm.querySelector("#name-input").value;
+    item.volume = editForm.querySelector("#volume-input").value;
+    item.material = editForm.querySelector("#material-input").value;
+    item.price = editForm.querySelector("#price-input").value;
+    item.color = editForm.querySelector("#color-input").value;
+
+    // Close the edit modal
+    editModal.classList.remove("modal--open");
+
+    // Do something with the updated item (e.g. update it in the item list)
+    console.log("Item updated:", item);
+  });
+
+  // Handle modal close
+  closeModalBtn.addEventListener("click", () => {
+    editModal.classList.remove("modal--open");
+  });
+}
