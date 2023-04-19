@@ -369,3 +369,8 @@
             font-weight: bold;
             transition: 0.5s;
         }
+
+        .item-list button {
+            margin-right: 10px;
+            width: 86.25px;
+        }
