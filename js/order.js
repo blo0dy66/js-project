@@ -35,6 +35,9 @@ const itemColorInput = document.getElementById("color-input")
 // DOM MODAL
 const closeModalButton = document.querySelector('.modal__close-btn')
 
+
+
+
 createNewItemButton.addEventListener('click', (event) => {
   event.preventDefault();
   createItem.style.display = 'block';
@@ -120,9 +123,22 @@ searchInput.addEventListener('input', () => {
   renderItems(filteredItems);
 });
 
+
+
 function renderItems(filteredItems = items) {
+
+  document.getElementById("sort-checkbox").addEventListener("change", () => {
+    if (document.getElementById("sort-checkbox").checked) {
+      items.sort((a, b) => b.volume - a.volume);
+    } else {
+      items = JSON.parse(localStorage.getItem("items"));
+    }
+    renderItems(items);
+  });
+
   // Clear items list
   itemList.innerHTML = "";
+
 
   // Render each item as a card
   filteredItems.forEach(item => {
@@ -200,7 +216,6 @@ function deleteItem(item) {
 function editItem(item) {
   const editModal = document.querySelector("#edit-modal");
   const editForm = document.querySelector("#edit-item");
-  const closeModalBtn = editModal.querySelector("[data-action=close]");
   editForm.querySelector("#name-input").value = item.name;
   editForm.querySelector("#volume-input").value = item.volume;
   editForm.querySelector("#material-input").value = item.material;
@@ -242,3 +257,17 @@ function editItem(item) {
     editItem.style.display = 'none';
   });
 }
+
+function countTotalVolume() {
+  let totalVolume = 0;
+  for (let i = 0; i < items.length; i++) {
+    totalVolume += parseInt(items[i].volume);
+  }
+  return totalVolume;
+}
+
+countVolumeButton.addEventListener('click', () => {
+  const totalVolumeElement = document.querySelector('.manage__volume');
+  const totalVolume = countTotalVolume();
+  totalVolumeElement.innerText = `${totalVolume}ml`;
+});
