@@ -335,8 +335,8 @@
         }
 
         .card img {
-            width: 50%;
-            height: auto;
+            width: 150px;
+            height: 150px;
         }
 
         .card h3 {
