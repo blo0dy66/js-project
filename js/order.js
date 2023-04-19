@@ -1,20 +1,3 @@
-async function uploadImage(image) {
-  const clientId = 'd71a53405a310f0';
-  const data = new FormData();
-  data.append('image', image);
-
-  const response = await fetch('https://api.imgur.com/3/image', {
-    method: 'POST',
-    headers: {
-      Authorization: `Client-ID ${clientId}`
-    },
-    body: data
-  });
-
-  const result = await response.json();
-  return result.data.link;
-}
-
 // Get DOM elements
 const itemList = document.querySelector(".item-list");
 const createNewItemButton = document.querySelector('.header__create-page-modal')
@@ -26,7 +9,7 @@ const createItem = document.getElementById('create-modal');
 const createItemForm = document.getElementById('create-modal');
 
 
-// DOM 
+// DOM INPUT
 const itemPriceInput = document.getElementById("price-input")
 const itemNameInput = document.getElementById("name-input")
 const itemVolumeInput = document.getElementById("volume-input")
@@ -34,7 +17,6 @@ const itemMaterialInput = document.getElementById("material-input")
 const itemColorInput = document.getElementById("color-input")
 // DOM MODAL
 const closeModalButton = document.querySelector('.modal__close-btn')
-
 
 
 
@@ -75,12 +57,12 @@ async function addItem(event) {
   const itemColor = itemColorInput.value;
 
   // Validate item name and price
-  if (!itemName || isNaN(itemPrice) || itemPrice <= 0) {
+  if (!itemName || isNaN(itemPrice) || isNaN(itemVolume) || itemPrice <= 0) {
     alert("Please enter a valid name and price for the item.");
     return;
   }
 
-  // Add image upload here
+  // Add image upload 
   const imageInput = document.getElementById("image-input");
   const image = imageInput.files[0];
   const imageUrl = await uploadImage(image);
@@ -91,7 +73,7 @@ async function addItem(event) {
   // Add new item to items array
   items.push(newItem);
 
-  // Save items to localStorage
+  // Save  to localStorage
   saveItems();
 
 
@@ -104,11 +86,12 @@ async function addItem(event) {
   itemColorInput.value = ""
   imageInput.value = "";
 
-  // Render updated items list
+  // Render updated
   renderItems();
 
 }
 
+// SEARCH
 searchButton.addEventListener('click', () => {
   const searchValue = searchInput.value.toLowerCase().trim();
   const filteredItems = items.filter(item => item.name.toLowerCase().includes(searchValue));
@@ -127,6 +110,7 @@ searchInput.addEventListener('input', () => {
 });
 
 
+// RENDER ITEM
 
 function renderItems(filteredItems = items) {
 
@@ -193,6 +177,7 @@ function renderItems(filteredItems = items) {
   });
 }
 
+// LOAD AND SAVE ITEM TO LOCALSTORAGE
 function saveItems() {
   localStorage.setItem("items", JSON.stringify(items));
 }
@@ -202,11 +187,11 @@ function loadItems() {
   if (storedItems) {
     items = JSON.parse(storedItems);
   } else {
-    items = []; // Initialize items array to an empty array if there is no data in localStorage
+    items = []; // empty array if  no data in localStorage
   }
 }
 
-
+// DELETE ITEM
 function deleteItem(item) {
   const index = items.indexOf(item);
   if (index > -1) {
@@ -215,6 +200,7 @@ function deleteItem(item) {
     renderItems();
   }
 }
+// EDIT ITEM
 
 function editItem(item) {
   const editModal = document.querySelector("#edit-modal");
@@ -237,7 +223,6 @@ function editItem(item) {
     item.color = editForm.querySelector("#color-input").value;
 
 
-    // Do something with the updated item (e.g. update it in the item list)
     console.log("Item updated:", item);
   });
 
@@ -261,6 +246,7 @@ function editItem(item) {
   });
 }
 
+// COUNT VOLUME
 function countTotalVolume() {
   let totalVolume = 0;
   for (let i = 0; i < items.length; i++) {
@@ -274,3 +260,23 @@ countVolumeButton.addEventListener('click', () => {
   const totalVolume = countTotalVolume();
   totalVolumeElement.innerText = `${totalVolume}ml`;
 });
+
+
+// IMAGE UPLOAD API
+
+async function uploadImage(image) {
+  const clientId = 'd71a53405a310f0';
+  const data = new FormData();
+  data.append('image', image);
+
+  const response = await fetch('https://api.imgur.com/3/image', {
+    method: 'POST',
+    headers: {
+      Authorization: `Client-ID ${clientId}`
+    },
+    body: data
+  });
+
+  const result = await response.json();
+  return result.data.link;
+}
