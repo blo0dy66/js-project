@@ -41,15 +41,18 @@ const closeModalButton = document.querySelector('.modal__close-btn')
 createNewItemButton.addEventListener('click', (event) => {
   event.preventDefault();
   createItem.style.display = 'block';
+  createNewItemButton.classList.add("modal-active");
 });
 
 closeModalButton.addEventListener('click', () => {
   createItem.style.display = 'none';
+  createNewItemButton.classList.remove("modal-active");
 });
 
 document.addEventListener('mousedown', (event) => {
   if (event.target === createItem) {
     createItem.style.display = 'none';
+    createNewItemButton.classList.remove("modal-active");
   }
 });
 

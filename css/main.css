@@ -364,3 +364,7 @@
         .card button:hover {
             background-color: #555;
         }
+
+        .modal-active {
+            font-weight: bold;
+        }
