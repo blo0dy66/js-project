@@ -169,9 +169,16 @@ function renderItems(filteredItems = items) {
     editButton.addEventListener('click', () => editItem(item))
     cardElement.appendChild(editButton)
 
+
+    const editModal = document.getElementById('edit-modal');
     editButton.addEventListener('click', () => {
-      const editModal = document.getElementById('edit-modal');
       editModal.style.display = 'block';
+    });
+
+    editModal.addEventListener('mousedown', (event) => {
+      if (event.target === editModal) {
+        editModal.style.display = 'none';
+      }
     });
 
 
@@ -298,3 +305,4 @@ function editItem(item) {
     renderItems();
   });
 }
+
