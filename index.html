@@ -92,16 +92,16 @@
             <h2 class="modal__title">Edit</h2>
             <form id="edit-item">
                 <div class="form-group">
-                    <label for="name-input">Item name</label>
-                    <input type="text" id="name-input" name="name-input">
+                    <label for="edit-name-input">Item name</label>
+                    <input type="text" id="edit-name-input" name="edit-name-input">
                 </div>
                 <div class="form-group">
-                    <label for="material-input">Item material</label>
-                    <input type="text" id="material-input" name="material-input">
+                    <label for="edit-material-input">Item material</label>
+                    <input type="text" id="edit-material-input" name="edit-material-input">
                 </div>
                 <div class="form-group">
-                    <label for="color-input">Item color</label>
-                    <select id="color-input" name="color-input">
+                    <label for="edit-color-input">Item color</label>
+                    <select id="edit-color-input" name="edit-color-input">
                         <option value="🔴red">🔴Red</option>
                         <option value="🔵blue">🔵Blue</option>
                         <option value="🟢green">🟢Green</option>
@@ -111,16 +111,15 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="volume-input">Item volume</label>
-                    <input type="text" id="volume-input" name="volume-input">
+                    <label for="edit-volume-input">Item volume</label>
+                    <input type="text" id="edit-volume-input" name="edit-volume-input">
                 </div>
 
                 <div class="form-group">
-                    <label for="price-input">Item price</label>
-                    <input type="text" id="price-input" name="price-input"></textarea>
+                    <label for="edit-price-input">Item price</label>
+                    <input type="text" id="edit-price-input" name="edit-price-input">
                 </div>
-
-                <button class="modal__btn-create" type="submit">Edit</button>
+                <button class="modal__btn-edit" id="modal__btn-edit" type="submit">Edit</button>
             </form>
             <button class="modal__close-btn" data-action="close"><span class="modal__close-icon">&times;</span></button>
         </div>

@@ -68,10 +68,11 @@ async function addItem(event) {
   const imageUrl = await uploadImage(image);
 
   // Create new item object
-  const newItem = { name: itemName, material: itemMaterial, volume: itemVolume, price: itemPrice, color: itemColor, imageUrl: imageUrl };
+  const newItem = { id: Date.now(), name: itemName, material: itemMaterial, volume: itemVolume, price: itemPrice, color: itemColor, imageUrl: imageUrl };
 
   // Add new item to items array
   items.push(newItem);
+  console.log(newItem)
 
   // Save  to localStorage
   saveItems();
@@ -163,6 +164,7 @@ function renderItems(filteredItems = items) {
 
     const editButton = document.createElement("button");
     editButton.setAttribute('id', 'edit-button')
+    editButton.setAttribute("data-itemid", item.id);
     editButton.innerText = "Edit"
     editButton.addEventListener('click', () => editItem(item))
     cardElement.appendChild(editButton)
@@ -202,49 +204,7 @@ function deleteItem(item) {
 }
 // EDIT ITEM
 
-function editItem(item) {
-  const editModal = document.querySelector("#edit-modal");
-  const editForm = document.querySelector("#edit-item");
-  editForm.querySelector("#name-input").value = item.name;
-  editForm.querySelector("#volume-input").value = item.volume;
-  editForm.querySelector("#material-input").value = item.material;
-  editForm.querySelector("#price-input").value = item.price;
-  editForm.querySelector("#color-input").value = item.color;
 
-
-  editForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    // Update the item's details with the form values
-    item.name = editForm.querySelector("#name-input").value;
-    item.volume = editForm.querySelector("#volume-input").value;
-    item.material = editForm.querySelector("#material-input").value;
-    item.price = editForm.querySelector("#price-input").value;
-    item.color = editForm.querySelector("#color-input").value;
-
-
-    console.log("Item updated:", item);
-  });
-
-
-  editForm.addEventListener("submit", event => {
-    event.preventDefault();
-    item.name = editForm.querySelector("#name-input").value;
-    item.material = editForm.querySelector("#material-input").value;
-    item.color = editForm.querySelector("#color-input").value;
-    item.volume = editForm.querySelector("#volume-input").value;
-    item.price = parseFloat(editForm.querySelector("#price-input").value);
-    saveItems();
-    renderItems();
-    editModal.style.display = "none";
-  });
-
-  const closeModalButton = document.querySelector('#edit-modal .modal__close-btn');
-  closeModalButton.addEventListener('click', () => {
-    const editItem = document.getElementById('edit-modal');
-    editItem.style.display = 'none';
-  });
-}
 
 // COUNT VOLUME
 function countTotalVolume() {
@@ -279,4 +239,62 @@ async function uploadImage(image) {
 
   const result = await response.json();
   return result.data.link;
+}
+
+function editItem(item) {
+  const editModal = document.getElementById('edit-modal');
+  editModal.style.display = 'block';
+
+  // Get input elements from modal
+  const itemPriceInput = document.getElementById('edit-price-input');
+  const itemNameInput = document.getElementById('edit-name-input');
+  const itemVolumeInput = document.getElementById('edit-volume-input');
+  const itemMaterialInput = document.getElementById('edit-material-input');
+  const itemColorInput = document.getElementById('edit-color-input');
+  const saveButton = document.getElementById('modal__btn-edit');
+
+  // Set input values to current item values
+  itemPriceInput.value = item.price;
+  itemNameInput.value = item.name;
+  itemVolumeInput.value = item.volume;
+  itemMaterialInput.value = item.material;
+  itemColorInput.value = item.color;
+
+  // Save changes to item when save button is clicked
+  saveButton.addEventListener('click', () => {
+    // Get new item values from form inputs
+    const newItemPrice = parseFloat(itemPriceInput.value);
+    const newItemName = itemNameInput.value;
+    const newItemVolume = itemVolumeInput.value;
+    const newItemMaterial = itemMaterialInput.value;
+    const newItemColor = itemColorInput.value;
+
+    // Validate new item name and price
+    if (!newItemName || isNaN(newItemPrice) || isNaN(newItemVolume) || newItemPrice <= 0) {
+      alert('Please enter a valid name and price for the item.');
+      return;
+    }
+
+    // Update item in items array
+    const index = items.findIndex(i => i.id === item.id);
+    items[index].name = newItemName;
+    items[index].material = newItemMaterial;
+    items[index].volume = newItemVolume;
+    items[index].color = newItemColor;
+    items[index].price = newItemPrice;
+
+    // Save updated items array to localStorage
+    saveItems();
+
+    // Clear form inputs and close modal
+    itemPriceInput.value = '';
+    itemNameInput.value = '';
+    itemVolumeInput.value = '';
+    itemMaterialInput.value = '';
+    itemColorInput.value = '';
+    editModal.style.display = 'none';
+
+    // Render updated items
+    renderItems();
+  });
 }
